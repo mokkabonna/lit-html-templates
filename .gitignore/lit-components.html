@@ -1,0 +1,41 @@
+<template>
+  ${include('./header.html')}
+  <p>${article}</p>
+  <div>${safe(_=> article.author)}</div>
+  <ul>
+    ${article.comments.map(comment => {
+      return include('./comment.html', comment, article, () => deleteComment(comment))
+    })}
+  </ul>
+</template>
+<script>
+  import article from './article'
+
+export default {
+  methods: {
+    deleteComment(comment) {
+      return api.delete(comment.id)
+    }
+  }
+}
+
+</script>
+
+
+<h1>${article.title}</h1>
+
+
+
+<template>
+  <p>
+    ${comment.body} ${scoped.foo} ${article.title}
+    <button on-click="${deleteComment}"></button>
+  </p>
+</template>
+<script>
+  import scoped from './scoped'
+
+  export default {
+    props: ['comment', 'article', 'deleteComment']
+  }
+</script>
